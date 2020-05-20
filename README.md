@@ -1,5 +1,7 @@
 # simple-vue
 
+> 最初版，目前还有蛮多case没有测试
+
 安装parcel
 ```
 npm install -g parcel-bundler
