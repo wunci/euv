@@ -24,12 +24,6 @@ new Vue({
       console.log("watch", val, oldVal);
     },
   },
-  updated() {
-    console.log("updated");
-  },
-  beforeUpdate() {
-    console.log("beforeUpdate");
-  },
   mounted() {
     console.log(this.hello);
     setTimeout(() => {
