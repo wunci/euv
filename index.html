@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>simple Vue</title>
+  </head>
+  <body>
+    <div id="div1">
+      <p v-html="html"></p>
+      {{a.b}} 123 {{test}}
+      <p>{{b}}</p>
+      <p>{{test}}</p>
+      <input type="text" v-model="test" />
+      <p v-html="html"></p>
+      <div v-show="c">
+        <div>{{html}}</div>
+      </div>
+      <p v-if="c" v-click="fn">c hello {{hello}}</p>
+      <p if="d" v-click="fn">d hello {{hello}}</p>
+      <div v-for="(item, idx) in list" class="list">
+        {{item}} 测试一下 {{idx}}
+      </div>
+    </div>
+    <script src="./src/main.js"></script>
+  </body>
+</html>
