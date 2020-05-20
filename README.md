@@ -18,8 +18,8 @@ parcel index.html
 - [x] {{ X }} 
 - [x] v-for // v-for=“(item, index) in list”
 - [x] v-if
-- [] v-show 
-- [] v-html
+- [ ] v-show 
+- [ ] v-html
 - [x] v-model
 - [x] v-click 点击事件
 - [x] computed 计算属性
