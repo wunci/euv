@@ -115,13 +115,10 @@ export default class Vue {
     return [vNode("textNode", {}, [String(val || "")])];
   }
   // 创建元素
-  _createEle(val, attr, children = [this._emptyNode()]) {
+  _createEle(val, attr, ...children) {
+    if (!children || children.length === 0) children = [this._emptyNode()];
     // 列表渲染使用
-    if (Array.isArray(children)) {
-      children = children.reduce((now, val) => {
-        return now.concat(val);
-      }, []);
-    }
+    children = children.flat(Infinity);
     return vNode(val, attr, children);
   }
   // for列表

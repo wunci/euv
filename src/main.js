@@ -15,6 +15,8 @@ new Vue({
     message2: "测试computed + modelMessage：",
     cls: "cls1 cls2",
     style: { fontSize: "30px", color: "#ffff" },
+    ifValue: false,
+    elifValue: true,
   },
   computed: {
     hello() {
@@ -39,6 +41,7 @@ new Vue({
       console.log("fn click");
       this.show = !this.show;
       this.ok = !this.ok;
+      this.elifValue = !this.elifValue;
       this.html = "<h1>html innerHTML change</h1>";
       this.list = [111, 22, 331, 44];
       this.cls = this.ok ? "cls3" : "";

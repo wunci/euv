@@ -5,7 +5,7 @@ export default class Complie {
     this.$vm = vm;
     this.$el = document.querySelector(el);
     const renderVnode = this.render(this.$el);
-    const vNodeFnStr = `
+    let vNodeFnStr = `
       with (this) {
         return _createEle(
           '${this.$el.nodeName.toLowerCase()}',
@@ -14,6 +14,8 @@ export default class Complie {
         )
       }
     `;
+    vNodeFnStr = vNodeFnStr.replace(/@@/g, "_emptyNode()"); // 把v-if else的@@替换成空节点
+
     // console.log(vNodeFnStr);
     this.$vm.$render = new Function("option", vNodeFnStr);
     const vnode = this.$vm.$render.call(vm, vm);
@@ -69,7 +71,7 @@ export default class Complie {
           }) +
           "'";
       } else {
-        value = `'${value}'`;
+        value = `'${value}'`.replace(/\n/g, "\\n");
       }
       vNodeChildren.push(`_textNode(${value})`);
     }
@@ -91,7 +93,10 @@ export default class Complie {
         if (!attrData["directives"]) attrData["directives"] = [];
         attrData["directives"].push({
           name,
-          value: name !== "for" ? "$" + attr.value + "$" : attr.value,
+          value:
+            name !== "for" && name !== "else"
+              ? "$" + attr.value + "$"
+              : attr.value, // 用$value$站位，以便后面可以把引号去掉 "a" -> a
           exp: attr.value,
         });
       }
@@ -104,7 +109,8 @@ export default class Complie {
     vNodeStr = vNodeStr.replace(
       /"value":(.*)?['"]\$(.*)?\$['"]/g,
       '"value":$2'
-    );
+    ); //"a" -> a
+    let elseif;
     // 单独处理v-for和v-if
     for (let i = 0; i < attribute.length; i++) {
       const attr = attribute[i];
@@ -120,11 +126,22 @@ export default class Complie {
           } { return ${vNodeStr} })`;
           // v-if
         } else if (name === "if") {
-          vNodeStr = `${attr.value} ? ${vNodeStr} : _emptyNode()`;
+          vNodeStr = `${attr.value} ? ${vNodeStr} : @@`; // 用@@占位
+        } else if (name === "else-if") {
+          elseif = `${attr.value} ? ${vNodeStr} : @@`;
+        } else if (name === "else") {
+          elseif = `${vNodeStr}`;
         }
       }
     }
-    vNodeChildren.push(vNodeStr);
+    // 上一个虚拟dom存在if else模版
+    if (vNodeChildren.length - 1 >= 0 && elseif) {
+      vNodeChildren[vNodeChildren.length - 1] = vNodeChildren[
+        vNodeChildren.length - 1
+      ].replace(/@@/g, elseif);
+    } else {
+      vNodeChildren.push(vNodeStr);
+    }
   }
   isDirective(attr) {
     return /(^v-|^:)\w+/.test(attr);

@@ -29,7 +29,7 @@ parcel index.html
 - [x] `Diff更新`
 - [x] `{{ data }}` or `{{ data + 'test' }}` or `{{ fn(data) }}`
 - [x] `v-for` // `v-for="(item, index) in list"` or `v-for="(item, index) in 10"` or `v-for="(item, index) in 'string'"`
-- [x] `v-if`
+- [x] `v-if` `v-else-if` `v-else`
 - [x] `v-show`
 - [x] `v-html`
 - [x] `v-model`

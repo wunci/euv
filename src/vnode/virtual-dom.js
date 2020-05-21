@@ -8,12 +8,11 @@ import {
   addVnodes,
   removeVnodes,
 } from "./util";
-export function vNode(tag, data, children, $el) {
+export function vNode(tag, data, children) {
   return {
     tag,
     data,
     children,
-    $el,
   };
 }
 
@@ -37,7 +36,7 @@ export function createElement(vNode) {
       }
     }
     //  指令初始化
-    if (vNode.data.directives) {
+    if (vNode.data && vNode.data.directives) {
       vNode.data.directives.forEach((directive) => {
         switch (directive.name) {
           case "click":
@@ -127,6 +126,7 @@ export function patchVnode(oldVnode, vnode) {
       }
     }
   }
+  // diff子节点
   if (oldCh.length || ch.length) {
     updateChildren(oldVnode.$el, oldCh, ch);
   }
@@ -205,7 +205,7 @@ export function updateChildren(parentElm, oldCh, newCh) {
     removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
   }
 }
-
+// 指令相关diff更新
 function directivesDiff(directives, oldVnode, oldData) {
   directives.forEach((directive) => {
     // v-show diff

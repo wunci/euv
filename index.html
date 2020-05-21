@@ -11,6 +11,9 @@
         height: 80px;
         margin-bottom: 20px;
       }
+      .red {
+        color: red;
+      }
     </style>
   </head>
   <body>
@@ -40,8 +43,10 @@
       <button style="font-size:30px;" v-click="fn">点击切换值</button>
       <p v-html="html"></p>
       {{obj.data}} 这是模版 {{message}}
-      <p v-if="ok">测试 v-if</p>
-      <p>{{message}} {{modelMessage + ' --->这是拼接在花括号内的'}}</p>
+      <p v-if="ifValue">显示了<span class="red">v-if</span></p>
+      <p v-else-if="elifValue">显示了<span class="red">v-else-if</span></p>
+      <p v-else>显示了<span class="red">v-else</span></p>
+      <p>{{message}} {{modelMessage + ' ---这是拼接在花括号内的'}}</p>
       <input type="text" v-model="modelMessage" />
       <div class="div2" v-show="show" style="font-size: 40px;">
         <div>test v-show</div>
