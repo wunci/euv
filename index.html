@@ -41,7 +41,7 @@
       <p v-html="html"></p>
       {{obj.data}} 这是模版 {{message}}
       <p v-if="ok">测试 v-if</p>
-      <p>{{message}} {{modelMessage}}</p>
+      <p>{{message}} {{modelMessage + ' --->这是拼接在花括号内的'}}</p>
       <input type="text" v-model="modelMessage" />
       <div class="div2" v-show="show" style="font-size: 40px;">
         <div>test v-show</div>
