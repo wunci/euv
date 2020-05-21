@@ -1,5 +1,4 @@
 import Dep from "./dep";
-let isWait = false;
 export default class Watcher {
   constructor(vm, expOrFn, cb, options = {}) {
     this.vm = vm;
@@ -22,7 +21,6 @@ export default class Watcher {
     const value = this.getter.call(this.vm, this.vm);
     Dep.target = null;
     // Dep.popTarget();
-    // this.cleanupDeps();
     return value;
   }
   update() {
@@ -61,21 +59,4 @@ export default class Watcher {
       this.deps[i].depend();
     }
   }
-  // cleanupDeps() {
-  //   var i = this.deps.length;
-  //   while (i--) {
-  //     var dep = this.deps[i];
-  //     if (!this.newDepIds.has(dep.id)) {
-  //       dep.removeSub(this);
-  //     }
-  //   }
-  //   var tmp = this.depIds;
-  //   this.depIds = this.newDepIds;
-  //   this.newDepIds = tmp || new Set();
-  //   this.newDepIds.clear();
-  //   tmp = this.deps;
-  //   this.deps = this.newDeps;
-  //   this.newDeps = tmp;
-  //   this.newDeps.length = 0;
-  // }
 }

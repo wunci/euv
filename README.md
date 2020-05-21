@@ -40,3 +40,6 @@ parcel index.html
 - [x] `:class`
 - [x] `:style`
 
+# 补充
+
+`虚拟dom` 不懂的可以看看我之前发的文章(相关代码相比现在有部分改动)：http://www.wclimb.site/2020/03/19/simple-virtual-dom/

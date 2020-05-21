@@ -4,7 +4,7 @@ import Observer from "./observer";
 import Complie from "./complie";
 import { noop } from "./util";
 import { vNode } from "../vnode/virtual-dom";
-export default class Vue {
+export default class Euv {
   constructor(options) {
     this.$option = options;
     this.$data = options.data;

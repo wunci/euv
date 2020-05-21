@@ -1,6 +1,6 @@
-import Vue from "./core/vue";
+import Euv from "./core/euv";
 
-new Vue({
+new Euv({
   el: "#div1",
   data: {
     obj: {
