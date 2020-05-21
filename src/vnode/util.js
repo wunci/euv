@@ -59,10 +59,14 @@ export function createKeyToOldIdx(children, beginIdx, endIdx) {
   return map;
 }
 
-export function addVnodes(parentElm, vnodes, startIdx, endIdx) {
+export function addVnodes(parentElm, vnodes, startIdx, endIdx, refElm) {
   for (; startIdx <= endIdx; ++startIdx) {
     const now = vnodes[startIdx];
-    parentElm.appendChild(createElement(now));
+    if (refElm) {
+      parentElm.insertBefore(createElement(now), refElm);
+    } else {
+      parentElm.appendChild(createElement(now));
+    }
   }
 }
 

@@ -148,7 +148,7 @@ export function updateChildren(parentElm, oldCh, newCh) {
   let newEndIdx = newCh.length - 1;
   let newStartVnode = newCh[0];
   let newEndVnode = newCh[newEndIdx];
-  let oldKeyToIdx, idxInOld, vnodeToMove;
+  let oldKeyToIdx, idxInOld, vnodeToMove, refElm;
   while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
     if (isUndef(oldStartVnode)) {
       oldStartVnode = oldCh[++oldStartIdx];
@@ -199,7 +199,8 @@ export function updateChildren(parentElm, oldCh, newCh) {
     }
   }
   if (oldStartIdx > oldEndIdx) {
-    addVnodes(parentElm, newCh, newStartIdx, newEndIdx);
+    refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].$el;
+    addVnodes(parentElm, newCh, newStartIdx, newEndIdx, refElm);
   } else if (newStartIdx > newEndIdx) {
     removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
   }
