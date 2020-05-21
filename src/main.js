@@ -48,6 +48,7 @@ new Vue({
   methods: {
     fn() {
       this.b = 3;
+      this.c = false;
       this.list = [111, 22, 331, 44];
     },
   },

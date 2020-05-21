@@ -23,34 +23,50 @@ export function vNode(tag, data, children, $el) {
  * @returns Element
  */
 export function createElement(vNode) {
+  if (!vNode) return;
   let el;
-  if (vNode.tag === "") {
-    el = document.createDocumentFragment();
-    if (Array.isArray(vNode.children) && vNode.children.length > 0) {
-      vNode.children.forEach((val) => {
-        el.appendChild(createElement.call(this, val));
-      });
-    }
-  } else if (vNode.tag === "textNode") {
+  if (vNode.tag === "textNode") {
     el = document.createTextNode(vNode.children[0]);
   } else {
     el = document.createElement(vNode.tag);
     for (const key in vNode.data) {
       // [TODO] 绑定事件
       if (vNode.data.hasOwnProperty(key)) {
-        if (key === "click") {
-          el.addEventListener("click", this[vNode.data[key]].bind(this), false);
-        } else if (key === "input") {
-          el.value = this[vNode.data[key]];
-          el.addEventListener(
-            "input",
-            (e) => {
-              this[vNode.data[key]] = e.target.value;
-            },
-            false
-          );
+        if (vNode.data.directives) {
+          vNode.data.directives.forEach((directive) => {
+            // console.log(directive);
+            switch (directive.name) {
+              case "click":
+                el.addEventListener(
+                  "click",
+                  this[directive.value].bind(this),
+                  false
+                );
+                break;
+              case "model":
+                el.value = this[directive.value];
+                el.addEventListener(
+                  "input",
+                  (e) => {
+                    this[directive.value] = e.target.value;
+                  },
+                  false
+                );
+                break;
+              case "show":
+                // debugger;
+                // if(this[directive.value]){
+                el.style.display = this[directive.value] ? "block" : "none";
+                // }
+                break;
+              default:
+                break;
+            }
+          });
         } else {
-          el.setAttribute(key, vNode.data[key]);
+          if (key !== "directives") {
+            el.setAttribute(key, vNode.data[key]);
+          }
         }
       }
     }
@@ -92,7 +108,7 @@ export function patchVnode(oldVnode, vnode) {
       for (let key of filterKeys) {
         if (isUndef(newData[key])) {
           oldVnode.$el.removeAttribute(oldData[key]);
-        } else if (newData[key] !== oldData[key]) {
+        } else if (newData[key] !== oldData[key] && key !== "directives") {
           oldVnode.$el.setAttribute(key, newData[key]);
         }
       }

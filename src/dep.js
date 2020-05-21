@@ -30,4 +30,3 @@ export default class Dep {
     }
   }
 }
-// Dep.target = null;

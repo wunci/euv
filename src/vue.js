@@ -36,8 +36,8 @@ export default class Vue {
   }
   initComputed(vm) {
     const computed = this.$option.computed;
-    var watchers = (vm._computedWatchers = Object.create(null));
-    var computedWatcherOptions = { lazy: true };
+    const watchers = (vm._computedWatchers = Object.create(null));
+    const computedWatcherOptions = { lazy: true };
     Object.keys(computed).forEach((key) => {
       const userDef = computed[key];
       const getter = typeof userDef === "function" ? userDef : userDef.get;
@@ -58,7 +58,7 @@ export default class Vue {
     });
   }
   initWatch(vm) {
-    var watchers = (vm._watchWatchers = Object.create(null));
+    const watchers = (vm._watchWatchers = Object.create(null));
     Object.keys(this.$option.watch).forEach((val) => {
       watchers[val] = new Watcher(
         vm,
@@ -82,7 +82,7 @@ export default class Vue {
   }
   defineComputed(key) {
     return function computedGetter() {
-      var watcher = this._computedWatchers && this._computedWatchers[key];
+      const watcher = this._computedWatchers && this._computedWatchers[key];
       if (watcher) {
         if (watcher.dirty) {
           watcher.evaluate();
@@ -126,11 +126,23 @@ export default class Vue {
   }
   // for列表
   _listEle(val, render) {
-    var ret, i, l, keys, key;
+    let ret, i, l, keys, key;
     if (Array.isArray(val) || typeof val === "string") {
       ret = new Array(val.length);
       for (i = 0, l = val.length; i < l; i++) {
         ret[i] = render(val[i], i);
+      }
+    } else if (typeof val === "number") {
+      ret = new Array(val);
+      for (i = 0; i < val; i++) {
+        ret[i] = render(i + 1, i);
+      }
+    } else {
+      keys = Object.keys(val);
+      ret = new Array(keys.length);
+      for (i = 0, l = keys.length; i < l; i++) {
+        key = keys[i];
+        ret[i] = render(val[key], key, i);
       }
     }
     return ret;

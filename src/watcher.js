@@ -39,27 +39,12 @@ export default class Watcher {
     this.dirty = false;
   }
   parseGetter(exp) {
-    // if (/_getData\(/.test(exp)) {
-    const str = `with(this){return ${exp}}`;
-    const fn = new Function("option", str);
-    return fn;
-    // } else {
-    // if (/[^\w.$]/.test(exp)) return; // xx.xx.
-
-    // var exps = exp.split(".");
-
-    // return function(vm) {
-    //   let obj = vm;
-    //   for (var i = 0, len = exps.length; i < len; i++) {
-    //     if (!obj) return;
-    //     obj = obj[exps[i]];
-    //   }
-    //   return obj;
-    // };
-    // }
+    const fnStr = `with(this){return ${exp}}`;
+    const getter = new Function("option", fnStr);
+    return getter;
   }
   addDep(dep) {
-    var id = dep.id;
+    const id = dep.id;
     if (!this.newDepIds) this.newDepIds = new Set();
     if (!this.deps) this.deps = [];
     if (!this.newDepIds.has(id)) {
@@ -69,55 +54,9 @@ export default class Watcher {
     }
   }
   depend() {
-    var i = this.deps.length;
+    let i = this.deps.length;
     while (i--) {
       this.deps[i].depend();
     }
   }
 }
-// function name(params) {
-//   with (this) {
-//     return _c(
-//       "div",
-//       { attrs: { id: "div1" } },
-//       [
-//         _v("\n      " + _s(a) + " " + _s(b) + "\n      "),
-//         c
-//           ? _c("button", { on: { click: fn } }, [_v("按钮")])
-//           : a
-//           ? _c("button", { on: { click: fn } }, [_v("按钮")])
-//           : _c("button", { on: { click: fn } }, [_v("按钮1")]),
-//         _v(" "),
-//         _l(arr, function(item, idx) {
-//           return _c("span", [_v(_s(item) + " " + _s(a))]);
-//         }),
-//         _v(" "),
-//         _c("input", {
-//           directives: [
-//             { name: "model", rawName: "v-model", value: a, expression: "a" },
-//           ],
-//           attrs: { type: "text" },
-//           domProps: { value: a },
-//           on: {
-//             input: function($event) {
-//               if ($event.target.composing) return;
-//               a = $event.target.value;
-//             },
-//           },
-//         }),
-//         _v(" "),
-//         _c(
-//           "button",
-//           {
-//             directives: [
-//               { name: "show", rawName: "v-show", value: c, expression: "c" },
-//             ],
-//             on: { click: fn },
-//           },
-//           [_v("按钮")]
-//         ),
-//       ],
-//       2
-//     );
-//   }
-// }

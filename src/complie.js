@@ -1,32 +1,32 @@
 import { createElement, patchVnode } from "./vnode/virtual-dom";
-import Watcher from "./watcher";
+import Watcher from "./Watcher";
 export default class Complie {
   constructor(el, vm) {
     this.$vm = vm;
     this.$el = document.querySelector(el);
-    const renderStr = this.render(this.$el);
-    let str = `
+    const renderVnode = this.render(this.$el);
+    const vNodeFnStr = `
       with (this) {
         return _createEle(
           '${this.$el.nodeName.toLowerCase()}',
           ${JSON.stringify(this.getAttrData(this.$el))},
-          [${renderStr}]
+          [${renderVnode}]
         )
       }
     `;
-    console.log(str);
-    this.$vm.$render = new Function("option", str);
-    const value = this.$vm.$render.call(vm, vm);
-    const oldDom = createElement.call(this.$vm, value);
+    console.log(vNodeFnStr);
+    this.$vm.$render = new Function("option", vNodeFnStr);
+    const vnode = this.$vm.$render.call(vm, vm);
+    const oldDom = createElement.call(this.$vm, vnode);
     // 在模版后面插入新的dom
     this.$el.parentNode.insertBefore(
-      createElement.call(this.$vm, value),
+      createElement.call(this.$vm, vnode),
       this.$el.nextSibling
     );
     // 移除原来模版
     this.$el.parentNode.removeChild(this.$el);
     this.$el = oldDom;
-    this.$vm.oldVnode = value;
+    this.$vm.oldVnode = vnode;
     this.initWatcher();
 
     //  test
@@ -43,6 +43,7 @@ export default class Complie {
         // 渲染新的虚拟dom，进行diff
         this.callHook("beforeUpdate");
         const render = this.$render.call(this, this);
+        console.log(this.oldVnode, render);
         patchVnode(this.oldVnode, render);
         this.oldVnode = render;
         this.callHook("updated");
@@ -92,11 +93,17 @@ export default class Complie {
         attrData[attr.name] = attr.value;
       } else if (this.isDirective(attr.name)) {
         const name = attr.name.substring(2);
-        if (name === "click") {
-          attrData[name] = attr.value;
-        } else if (name === "model") {
-          attrData["input"] = attr.value;
-        }
+        // if (name === "click") {
+        //   attrData[name] = attr.value;
+        // } else if (name === "model") {
+        //   attrData["input"] = attr.value;
+        // } else if (name === "show") {
+        if (!attrData["directives"]) attrData["directives"] = [];
+        attrData["directives"].push({
+          name,
+          value: attr.value,
+        });
+        // }
       }
     });
     // 初始化vnode
