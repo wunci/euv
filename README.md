@@ -1,6 +1,15 @@
-# simple-vue
+# euv
 
-> 初版，目前还有蛮多case没有测试
+why euv? because:  
+```js
+'vue'.split('').sort().join('') // euv
+```
+source:
+```js
+'node'.split('').sort().join('') // deno
+```
+
+> 初版，目前还有case没有测试
 
 安装 `parcel` 运行项目
 ```
