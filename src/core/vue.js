@@ -3,7 +3,7 @@ import Watcher from "./watcher";
 import Observer from "./observer";
 import Complie from "./complie";
 import { noop } from "./util";
-import { vNode } from "./vnode/virtual-dom";
+import { vNode } from "../vnode/virtual-dom";
 export default class Vue {
   constructor(options) {
     this.$option = options;

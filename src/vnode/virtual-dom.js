@@ -54,10 +54,7 @@ export function createElement(vNode) {
                 );
                 break;
               case "show":
-                // debugger;
-                // if(this[directive.value]){
                 el.style.display = this[directive.value] ? "block" : "none";
-                // }
                 break;
               default:
                 break;

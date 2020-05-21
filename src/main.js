@@ -1,11 +1,11 @@
-import Vue from "./vue";
+import Vue from "./core/vue";
 
 new Vue({
   el: "#div1",
   data: {
     a: { b: "a.b" },
     b: 2,
-    c: true,
+    c: false,
     d: true,
     test: 22,
     html: "<h2>2123123</h2>",

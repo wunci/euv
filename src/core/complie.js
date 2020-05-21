@@ -1,4 +1,4 @@
-import { createElement, patchVnode } from "./vnode/virtual-dom";
+import { createElement, patchVnode } from "../vnode/virtual-dom";
 import Watcher from "./Watcher";
 export default class Complie {
   constructor(el, vm) {
