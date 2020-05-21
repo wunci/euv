@@ -36,7 +36,7 @@ export function createElement(vNode) {
         }
       }
     }
-    // [TODO] 绑定事件
+    //  指令初始化
     if (vNode.data.directives) {
       vNode.data.directives.forEach((directive) => {
         switch (directive.name) {
@@ -60,6 +60,18 @@ export function createElement(vNode) {
             break;
           case "html":
             el.innerHTML = directive.value;
+            break;
+          case "class":
+            const cur = " " + (el.getAttribute("class") || "") + " ";
+            if (cur.indexOf(" " + directive.value + " ") < 0) {
+              el.setAttribute("class", (cur + directive.value).trim());
+            }
+            break;
+          case "style":
+            for (const key in directive.value) {
+              const value = directive.value[key];
+              el.style[key] = value;
+            }
             break;
           default:
             break;
@@ -107,7 +119,7 @@ export function patchVnode(oldVnode, vnode) {
         } else if (newData[key] !== oldData[key]) {
           // 指令
           if (key === "directives") {
-            directivesDiff(newData[key], oldVnode);
+            directivesDiff(newData[key], oldVnode, oldData);
           } else {
             oldVnode.$el.setAttribute(key, newData[key]);
           }
@@ -193,7 +205,7 @@ export function updateChildren(parentElm, oldCh, newCh) {
   }
 }
 
-function directivesDiff(directives, oldVnode) {
+function directivesDiff(directives, oldVnode, oldData) {
   directives.forEach((directive) => {
     // v-show diff
     switch (directive.name) {
@@ -208,6 +220,33 @@ function directivesDiff(directives, oldVnode) {
       case "html":
         if (oldVnode.$el.innerHTML !== directive.value) {
           oldVnode.$el.innerHTML = directive.value;
+        }
+        break;
+      case "class":
+        let oldClass = oldData.directives.filter((val) => val.name === "class");
+        let cur = oldVnode.$el.getAttribute("class");
+        // 还原之前的
+        if (oldClass.length > 0) {
+          cur = cur.replace(oldClass[0].value.trim(), "").trim();
+        }
+        cur = " " + (cur || "") + " ";
+        // 赋值最新的
+        if (cur.indexOf(" " + directive.value + " ") < 0) {
+          oldVnode.$el.setAttribute("class", (cur + directive.value).trim());
+        }
+        break;
+      case "style":
+        let oldStyle = oldData.directives.filter((val) => val.name === "style");
+        // 还原之前的
+        if (oldStyle.length > 0) {
+          for (const key in oldStyle[0].value) {
+            oldVnode.$el.style[key] = "";
+          }
+        }
+        // 赋值最新的
+        for (const key in directive.value) {
+          const value = directive.value[key];
+          oldVnode.$el.style[key] = value;
         }
         break;
       default:

@@ -17,7 +17,8 @@
       <div class="div2" v-show="show" style="font-size: 40px;">
         <div>test v-show</div>
       </div>
-      <p>{{hello}}</p>
+      <p :class="cls" class="hello">{{hello}}</p>
+      <p class="style" :style="style" style="background: #f60;">测试:style</p>
       <div v-for="(item, index) in list" class="list">
         item: {{item}}, index: {{index}}
       </div>

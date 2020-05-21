@@ -13,6 +13,8 @@ new Vue({
     html: "<h2>v-html 😄</h2>",
     list: [11, 22, 33, 44],
     message2: "测试computed + modelMessage：",
+    cls: "cls1 cls2",
+    style: { fontSize: "30px", color: "#ffff" },
   },
   computed: {
     hello() {
@@ -39,6 +41,13 @@ new Vue({
       this.ok = !this.ok;
       this.html = "<h1>html innerHTML change</h1>";
       this.list = [111, 22, 331, 44];
+      this.cls = this.ok ? "cls3" : "";
+      this.style = this.ok
+        ? { fontSize: "30px", color: "#ffff" }
+        : {
+            color: "#ccc",
+            fontSize: "20px",
+          };
     },
   },
 });

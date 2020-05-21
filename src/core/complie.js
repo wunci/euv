@@ -87,7 +87,7 @@ export default class Complie {
         attrData[attr.name] = attr.value;
       } else if (this.isDirective(attr.name)) {
         // 收集directive
-        const name = attr.name.substring(2);
+        const name = this.getDirectiveName(attr.name);
         if (!attrData["directives"]) attrData["directives"] = [];
         attrData["directives"].push({
           name,
@@ -105,10 +105,11 @@ export default class Complie {
       /"value":(.*)?['"]\$(.*)?\$['"]/g,
       '"value":$2'
     );
+    // 单独处理v-for和v-if
     for (let i = 0; i < attribute.length; i++) {
       const attr = attribute[i];
       if (this.isDirective(attr.name)) {
-        const name = attr.name.substring(2);
+        const name = this.getDirectiveName(attr.name);
         // v-for
         if (name === "for") {
           const params = attr.value.split(/\s+in\s+/);
@@ -126,7 +127,10 @@ export default class Complie {
     vNodeChildren.push(vNodeStr);
   }
   isDirective(attr) {
-    return attr.indexOf("v-") == 0;
+    return /(^v-|^:)\w+/.test(attr);
+  }
+  getDirectiveName(attr) {
+    return attr.replace(/(?:^v-|^:)(\w+)/, "$1");
   }
   getAttrData(el) {
     const attrData = {};

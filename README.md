@@ -27,6 +27,6 @@ parcel index.html
 - [x] computed 计算属性
 - [x] watch 监听
 - [x] beforeCreate、created、mounted、beforeUpdate、updated
-- [ ] :class // 最近支持
-- [ ] :style // 最近支持
+- [x] :class
+- [x] :style
 
