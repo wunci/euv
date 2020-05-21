@@ -17,6 +17,14 @@ export default class Dep {
   addSub(watcher) {
     this.subs.push(watcher);
   }
+  removeSub(sub) {
+    if (this.subs.length) {
+      var index = this.subs.indexOf(sub);
+      if (index > -1) {
+        return this.subs.splice(index, 1);
+      }
+    }
+  }
   depend() {
     if (Dep.target) {
       // this.subs.push(Dep.target);

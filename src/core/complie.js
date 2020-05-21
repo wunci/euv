@@ -14,7 +14,7 @@ export default class Complie {
         )
       }
     `;
-    console.log(vNodeFnStr);
+    // console.log(vNodeFnStr);
     this.$vm.$render = new Function("option", vNodeFnStr);
     const vnode = this.$vm.$render.call(vm, vm);
     const oldDom = createElement.call(this.$vm, vnode);
@@ -28,13 +28,6 @@ export default class Complie {
     this.$el = oldDom;
     this.$vm.oldVnode = vnode;
     this.initWatcher();
-
-    //  test
-    // this.$vm.b = "-----";
-    // const a = this.render.call(vm, vm);
-    // setTimeout(() => {
-    //   patchVnode(value, a);
-    // }, 1000);
   }
   initWatcher() {
     new Watcher(
@@ -43,7 +36,6 @@ export default class Complie {
         // 渲染新的虚拟dom，进行diff
         this.callHook("beforeUpdate");
         const render = this.$render.call(this, this);
-        console.log(this.oldVnode, render);
         patchVnode(this.oldVnode, render);
         this.oldVnode = render;
         this.callHook("updated");
@@ -65,10 +57,10 @@ export default class Complie {
   }
   complieText(node, vNodeChildren) {
     const textConetent = node.textContent;
+    const reg = /\{\{(.+?)\}\}/g;
     // 不是空节点就收集
     if (textConetent.replace(/\n/g, "").trim() !== "") {
       let value = textConetent;
-      const reg = /\{\{(.+?)\}\}/g;
       if (reg.test(textConetent)) {
         value =
           "'" +
@@ -76,6 +68,8 @@ export default class Complie {
             return "' + " + val + " + '";
           }) +
           "'";
+      } else {
+        value = `'${value}'`;
       }
       vNodeChildren.push(`_textNode(${value})`);
     }
@@ -92,24 +86,25 @@ export default class Complie {
       if (!this.isDirective(attr.name)) {
         attrData[attr.name] = attr.value;
       } else if (this.isDirective(attr.name)) {
+        // 收集directive
         const name = attr.name.substring(2);
-        // if (name === "click") {
-        //   attrData[name] = attr.value;
-        // } else if (name === "model") {
-        //   attrData["input"] = attr.value;
-        // } else if (name === "show") {
         if (!attrData["directives"]) attrData["directives"] = [];
         attrData["directives"].push({
           name,
-          value: attr.value,
+          value: name !== "for" ? "$" + attr.value + "$" : attr.value,
+          exp: attr.value,
         });
-        // }
       }
     });
     // 初始化vnode
     let vNodeStr = `_createEle('${node.nodeName.toLowerCase()}', ${JSON.stringify(
       attrData
     )}, ${children})`;
+    // value去除引号，方便直接访问到值，不然就是一个字符串
+    vNodeStr = vNodeStr.replace(
+      /"value":(.*)?['"]\$(.*)?\$['"]/g,
+      '"value":$2'
+    );
     for (let i = 0; i < attribute.length; i++) {
       const attr = attribute[i];
       if (this.isDirective(attr.name)) {

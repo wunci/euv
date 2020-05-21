@@ -35,7 +35,7 @@ export default class Vue {
     });
   }
   initComputed(vm) {
-    const computed = this.$option.computed;
+    const computed = this.$option.computed || {};
     const watchers = (vm._computedWatchers = Object.create(null));
     const computedWatcherOptions = { lazy: true };
     Object.keys(computed).forEach((key) => {
@@ -59,7 +59,7 @@ export default class Vue {
   }
   initWatch(vm) {
     const watchers = (vm._watchWatchers = Object.create(null));
-    Object.keys(this.$option.watch).forEach((val) => {
+    Object.keys(this.$option.watch || {}).forEach((val) => {
       watchers[val] = new Watcher(
         vm,
         () => {

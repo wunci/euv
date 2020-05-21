@@ -4,22 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>simple Vue</title>
+    <style></style>
   </head>
   <body>
     <div id="div1">
+      <button style="font-size:30px;" v-click="fn">点击切换值</button>
       <p v-html="html"></p>
-      {{a.b}} 123 {{test}}
-      <p>{{b}}</p>
-      <p>{{test}}</p>
-      <input type="text" v-model="test" />
-      <p v-html="html"></p>
-      <div v-show="c">
-        <div>{{html}}</div>
+      {{obj.data}} 这是模版 {{message}}
+      <p v-if="ok">测试 v-if</p>
+      <p>{{message}} {{modelMessage}}</p>
+      <input type="text" v-model="modelMessage" />
+      <div class="div2" v-show="show" style="font-size: 40px;">
+        <div>test v-show</div>
       </div>
-      <p v-if="c" v-click="fn">c hello {{hello}}</p>
-      <p if="d" v-click="fn">d hello {{hello}}</p>
+      <p>{{hello}}</p>
       <div v-for="(item, index) in list" class="list">
-        {{item}} 测试一下 {{index}}
+        item: {{item}}, index: {{index}}
       </div>
     </div>
     <script src="./src/main.js"></script>

@@ -3,52 +3,41 @@ import Vue from "./core/vue";
 new Vue({
   el: "#div1",
   data: {
-    a: { b: "a.b" },
-    b: 2,
-    c: false,
-    d: true,
-    test: 22,
-    html: "<h2>2123123</h2>",
+    obj: {
+      data: "obj.data",
+    },
+    ok: true,
+    message: "message",
+    modelMessage: 1,
+    show: true,
+    html: "<h2>v-html 😄</h2>",
     list: [11, 22, 33, 44],
+    message2: "测试computed + modelMessage：",
   },
   computed: {
     hello() {
-      return this.b + this.html;
+      return this.message2 + this.modelMessage;
     },
   },
   watch: {
-    b(val, oldVal) {
+    ok(val, oldVal) {
       console.log("watch", val, oldVal);
     },
-    test(val, oldVal) {
+    modelMessage(val, oldVal) {
       console.log("watch", val, oldVal);
     },
   },
   mounted() {
-    console.log(this.hello);
     setTimeout(() => {
-      // this.a = { b: 231231 };
-      // this.b = "-----";
-      // console.log(this.hello);
-      debugger;
       this.list = [11, 22];
-      this.c = false;
-      // this.html = "0000";
-      // setTimeout(() => {
-      //   this.list = [11, 22, 33, 44];
-      // }, 1000);
-      // this.html = 12131;
-      // this.c = true;
-    }, 1000);
-    // setTimeout(() => {
-    //   this.b = 123;
-    //   this.list = [1];
-    // }, 3000);
+    }, 1500);
   },
   methods: {
     fn() {
-      this.b = 3;
-      this.c = false;
+      console.log("fn click");
+      this.show = !this.show;
+      this.ok = !this.ok;
+      this.html = "<h1>html innerHTML change</h1>";
       this.list = [111, 22, 331, 44];
     },
   },
