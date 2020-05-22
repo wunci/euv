@@ -17,7 +17,6 @@ export default class Complie {
     // 把v-if else的 @elif@ 替换成空节点
     vNodeFnStr = vNodeFnStr.replace(/@elif@/g, "_emptyNode()");
 
-    // console.log(vNodeFnStr);
     // 将虚拟dom的字符串转函数，以后每次都拿这个函数重新生成虚拟dom，因为结构是不会变的
     this.$vm.$render = new Function(vNodeFnStr);
     // 生成虚拟dom

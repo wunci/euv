@@ -32,7 +32,6 @@ export default class Dep {
   }
   notify() {
     const subs = this.subs.slice(); // 浅拷贝，不然会造成死循环
-    console.log(subs);
     for (let i = 0; i < subs.length; i++) {
       subs[i].update();
     }
