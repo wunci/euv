@@ -40,7 +40,7 @@
       </a>
     </nav>
     <div id="div1">
-      <button style="font-size:30px;" v-click="fn">点击切换值</button>
+      <button style="font-size:30px;" @click="fn">点击切换值</button>
       <p v-html="html"></p>
       {{obj.data}} 这是模版 {{message}}
       <p v-if="ifValue">显示了<span class="red">v-if</span></p>
@@ -57,6 +57,5 @@
       </div>
       <p :class="cls" class="hello">{{hello}}</p>
     </div>
-    <script src="./src/main.js"></script>
   </body>
 </html>

@@ -39,8 +39,8 @@ export function dataChanged(oldData, newData) {
 }
 
 export function findIdxInOld(node, oldCh, start, end) {
-  for (var i = start; i < end; i++) {
-    var c = oldCh[i];
+  for (let i = start; i < end; i++) {
+    let c = oldCh[i];
     if (isDef(c) && sameVnode(node, c)) {
       return i;
     }
@@ -48,8 +48,8 @@ export function findIdxInOld(node, oldCh, start, end) {
 }
 
 export function createKeyToOldIdx(children, beginIdx, endIdx) {
-  var i, key;
-  var map = {};
+  let i, key;
+  let map = {};
   for (i = beginIdx; i <= endIdx; ++i) {
     key = children[i].data.key;
     if (isDef(key)) {

@@ -1,4 +1,4 @@
-let uid = 0;
+let uidDep = 0;
 export default class Dep {
   static target = null;
   static targetStack = [];
@@ -11,7 +11,7 @@ export default class Dep {
     Dep.target = Dep.targetStack[Dep.targetStack.length - 1];
   };
   constructor() {
-    this.id = uid++;
+    this.id = uidDep++;
     this.subs = [];
   }
   addSub(watcher) {
@@ -19,7 +19,7 @@ export default class Dep {
   }
   removeSub(sub) {
     if (this.subs.length) {
-      var index = this.subs.indexOf(sub);
+      const index = this.subs.indexOf(sub);
       if (index > -1) {
         return this.subs.splice(index, 1);
       }
@@ -27,12 +27,12 @@ export default class Dep {
   }
   depend() {
     if (Dep.target) {
-      // this.subs.push(Dep.target);
       Dep.target.addDep(this);
     }
   }
   notify() {
-    var subs = this.subs.slice(); // 浅拷贝，不然会造成死循环
+    const subs = this.subs.slice(); // 浅拷贝，不然会造成死循环
+    console.log(subs);
     for (let i = 0; i < subs.length; i++) {
       subs[i].update();
     }

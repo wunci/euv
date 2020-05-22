@@ -8,19 +8,18 @@ source:
 ```js
 'node'.split('').sort().join('') // deno
 ```
+
 # Quick Start
 
-> 初版，目前还有 `case` 没有测试
+> 目前还有 `case` 没有测试
 
-安装 `parcel` 运行项目
+安装
 ```
-npm install -g parcel-bundler
+npm install
 ```
 运行
 ```
 npm run dev
-// or
-parcel index.html
 ```
 
 # 目前支持功能
@@ -33,12 +32,13 @@ parcel index.html
 - [x] `v-show`
 - [x] `v-html`
 - [x] `v-model`
-- [x] `v-click` 点击事件
+- [x] `v-click` `@click` 点击事件
 - [x] `computed` 计算属性
 - [x] `watch` 监听
-- [x] `beforeCreate`、`created`、`mounted`、`beforeUpdate`、`updated`
+- [x] `beforeCreate`、`created`、`beforeMount`、`mounted`、`beforeUpdate`、`updated`
 - [x] `:class`
 - [x] `:style`
+- [x] `$nextTick`
 
 # 补充
 

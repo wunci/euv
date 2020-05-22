@@ -1,10 +1,9 @@
-import { isPlainObject, hasOwn } from "./util";
+import { isPlainObject, hasOwn } from "./util/index";
 import Dep from "./dep";
 export default class Observer {
   constructor(value) {
     this.value = value;
     this.dep = new Dep();
-    this.vmCount = 0;
     this.def(value, "__ob__", this);
     this.walk(value);
   }
@@ -21,6 +20,7 @@ export default class Observer {
       configurable: false, // 不能再define
       get() {
         dep.depend();
+        // 深层收集依赖
         if (childOb) {
           childOb.dep.depend();
         }
@@ -44,10 +44,10 @@ export default class Observer {
     }
     return ob;
   }
-  def(obj, key, val, enumerable) {
+  def(obj, key, val) {
     Object.defineProperty(obj, key, {
       value: val,
-      enumerable: !!enumerable,
+      enumerable: false,
       writable: true,
       configurable: true,
     });

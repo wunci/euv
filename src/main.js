@@ -28,13 +28,26 @@ new Euv({
       console.log("watch", val, oldVal);
     },
     modelMessage(val, oldVal) {
-      console.log("watch", val, oldVal);
+      console.log("watch->", "newVal:", val, ", old:", oldVal);
     },
   },
   mounted() {
     setTimeout(() => {
+      console.log("old->", JSON.stringify(this.list));
+      this.$nextTick(() => {
+        console.log("new->", JSON.stringify(this.list));
+      });
+      this.$nextTick().then(() => {
+        console.log("new->", JSON.stringify(this.list));
+      });
       this.list = [11, 22];
     }, 1500);
+  },
+  beforeUpdate() {
+    // console.log("beforeUpdate");
+  },
+  updated() {
+    console.log("updated");
   },
   methods: {
     fn() {
