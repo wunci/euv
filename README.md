@@ -33,6 +33,7 @@ npm run dev
 - [x] `v-html`
 - [x] `v-model`
 - [x] `v-click` `@click` 点击事件
+- [x] `methods` 方法
 - [x] `computed` 计算属性
 - [x] `watch` 监听
 - [x] `beforeCreate`、`created`、`beforeMount`、`mounted`、`beforeUpdate`、`updated`
