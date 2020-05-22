@@ -40,7 +40,15 @@ export function createElement(vNode) {
       vNode.data.directives.forEach((directive) => {
         switch (directive.name) {
           case "click":
-            el.addEventListener("click", this[directive.exp].bind(this), false);
+            const bCanExecFn = /\(([^\)]*)?\)$/.test(directive.exp);
+            const handler = bCanExecFn ? directive.value : directive.value();
+            el.addEventListener(
+              "click",
+              ($event) => {
+                return handler.call(this, $event);
+              },
+              false
+            );
             break;
           case "model":
             el.value = this[directive.exp];

@@ -16,7 +16,6 @@ export default class Complie {
     `;
     // 把v-if else的 @elif@ 替换成空节点
     vNodeFnStr = vNodeFnStr.replace(/@elif@/g, "_emptyNode()");
-
     // 将虚拟dom的字符串转函数，以后每次都拿这个函数重新生成虚拟dom，因为结构是不会变的
     this.$vm.$render = new Function(vNodeFnStr);
     // 生成虚拟dom
@@ -104,27 +103,31 @@ export default class Complie {
         // 收集directive
         const name = this.getDirectiveName(attr.name);
         if (!attrData["directives"]) attrData["directives"] = [];
-        attrData["directives"].push({
-          name,
-          value:
-            name !== "for" && name !== "else"
-              ? "$" + attr.value + "$"
-              : attr.value, // 用 $value$ 站位，以便后面可以把引号去掉 "a" -> a
-          exp: attr.value,
-        });
+        if (name === "click") {
+          attrData["directives"].push({
+            name,
+            value: `$function ($event) { return ${attr.value}}$`, //${attr.value.replace(/^\w+(?:\()?([^\)]*)?\)?$/,"$1")}
+            exp: attr.value,
+          });
+        } else {
+          attrData["directives"].push({
+            name,
+            value:
+              name !== "for" && name !== "else"
+                ? "$" + attr.value + "$"
+                : attr.value, // 用 $value$ 站位，以便后面可以把引号去掉 "a" -> a
+            exp: attr.value,
+          });
+        }
       }
     });
-
     // 初始化vnode
     let vNodeStr = `_createEle('${node.nodeName.toLowerCase()}', ${JSON.stringify(
       attrData
     )}, ${children})`;
 
     // value去除引号，方便直接访问到值，不然就是一个字符串
-    vNodeStr = vNodeStr.replace(
-      /"value":(.*)?['"]\$(.*)?\$['"]/g,
-      '"value":$2'
-    ); //"a" -> a
+    vNodeStr = vNodeStr.replace(/['"]\$(.*)?\$['"]/g, "$1"); //"a" -> a
     let elseif;
     // 单独处理v-for和v-if
     for (let i = 0; i < attribute.length; i++) {

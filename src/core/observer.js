@@ -1,11 +1,24 @@
-import { isPlainObject, hasOwn } from "./util/index";
+import { isPlainObject, hasOwn, def } from "./util/index";
 import Dep from "./dep";
+import { arrayMethods, arrayKeys } from "./util/ob-array";
 export default class Observer {
   constructor(value) {
     this.value = value;
     this.dep = new Dep();
-    this.def(value, "__ob__", this);
-    this.walk(value);
+    def(value, "__ob__", this);
+    if (Array.isArray(value)) {
+      if ("__proto__" in {}) {
+        value.__proto__ = arrayMethods;
+      } else {
+        for (var i = 0, l = arrayKeys.length; i < l; i++) {
+          var key = keys[i];
+          def(value, key, arrayMethods[key]);
+        }
+      }
+      this.observeArray(value);
+    } else {
+      this.walk(value);
+    }
   }
   walk(data) {
     Object.keys(data).forEach((key) => {
@@ -34,6 +47,11 @@ export default class Observer {
       },
     });
   }
+  observeArray(items) {
+    for (var i = 0, l = items.length; i < l; i++) {
+      this.observe(items[i]);
+    }
+  }
   observe(value) {
     if (typeof value !== "object") return;
     let ob;
@@ -43,13 +61,5 @@ export default class Observer {
       ob = new Observer(value);
     }
     return ob;
-  }
-  def(obj, key, val) {
-    Object.defineProperty(obj, key, {
-      value: val,
-      enumerable: false,
-      writable: true,
-      configurable: true,
-    });
   }
 }

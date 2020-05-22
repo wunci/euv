@@ -13,3 +13,4 @@ yarn-error.log*
 *.sln
 .cache/
 dist/
+test.js

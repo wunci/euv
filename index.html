@@ -56,6 +56,11 @@
         item: {{item}}, index: {{index}}
       </div>
       <p :class="cls" class="hello">{{hello}}</p>
+      <input type="text" v-model="todoinput" />
+      <button @click="add">添加</button>
+      <div v-for="(item, index) in todolist" @click="todoFn(index, $event)">
+        {{item}}
+      </div>
     </div>
   </body>
 </html>

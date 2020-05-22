@@ -17,6 +17,8 @@ new Euv({
     style: { fontSize: "30px", color: "#ffff" },
     ifValue: false,
     elifValue: true,
+    todolist: [1, 2, 3],
+    todoinput: "",
   },
   computed: {
     hello() {
@@ -50,7 +52,10 @@ new Euv({
     console.log("updated");
   },
   methods: {
-    fn() {
+    add() {
+      this.todolist.push(this.todoinput);
+    },
+    fn(a) {
       console.log("fn click");
       this.show = !this.show;
       this.ok = !this.ok;
@@ -64,6 +69,9 @@ new Euv({
             color: "#ccc",
             fontSize: "20px",
           };
+    },
+    todoFn(index, $event) {
+      console.log("todolist", index, $event);
     },
   },
 });
