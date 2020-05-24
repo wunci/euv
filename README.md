@@ -32,7 +32,7 @@ npm run dev
 - [x] `v-show`
 - [x] `v-html`
 - [x] `v-model`
-- [x] `v-click` `@click` 点击事件 @click="fn('a',$event)" @click="fn"
+- [x] `v-click` `@click` 点击事件 `@click="fn('a',$event)"` `@click="fn"` `@click="show = false"` `@click="function(){console.log(1)}"`
 - [x] `methods` 方法
 - [x] `computed` 计算属性
 - [x] `watch` 监听

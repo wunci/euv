@@ -55,7 +55,7 @@ new Euv({
     add() {
       this.todolist.push(this.todoinput);
     },
-    fn(a) {
+    fn() {
       console.log("fn click");
       this.show = !this.show;
       this.ok = !this.ok;

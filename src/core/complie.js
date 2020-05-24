@@ -104,9 +104,21 @@ export default class Complie {
         const name = this.getDirectiveName(attr.name);
         if (!attrData["directives"]) attrData["directives"] = [];
         if (name === "click") {
+          const fnExpRE = /^([\w$_]+|\([^)]*?\))\s*=>|^function(?:\s+[\w$]+)?\s*\(/;
+          const isFunctionExpression = fnExpRE.test(attr.value);
+          const simplePathRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['[^']*?']|\["[^"]*?"]|\[\d+]|\[[A-Za-z_$][\w$]*])*$/;
+          const isMethodPath = simplePathRE.test(attr.value);
+          const isFunctionInvocation = simplePathRE.test(
+            attr.value.replace(/\([^)]*?\);*$/, "")
+          );
           attrData["directives"].push({
             name,
-            value: `$function ($event) { return ${attr.value}}$`, //${attr.value.replace(/^\w+(?:\()?([^\)]*)?\)?$/,"$1")}
+            value:
+              isMethodPath || isFunctionExpression // fn、function(){}
+                ? `$${attr.value}$`
+                : `$function ($event) {  ${
+                    isFunctionInvocation ? "return " + attr.value : attr.value // a = 1、fn(a, $event)
+                  }}$`,
             exp: attr.value,
           });
         } else {
