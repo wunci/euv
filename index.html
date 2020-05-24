@@ -55,7 +55,9 @@
       <div v-for="(item, index) in list" class="list">
         item: {{item}}, index: {{index}}
       </div>
-      <p :class="cls" class="hello">{{hello}}</p>
+      <p :class="cls" class="hello" @mouseenter="console.log(1)">
+        {{hello}}
+      </p>
       <input type="text" v-model="todoinput" />
       <button @click="add">添加</button>
       <div v-for="(item, index) in todolist" @click="todoFn(index, $event)">

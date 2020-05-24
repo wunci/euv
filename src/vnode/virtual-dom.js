@@ -38,48 +38,49 @@ export function createElement(vNode) {
     //  指令初始化
     if (vNode.data && vNode.data.directives) {
       vNode.data.directives.forEach((directive) => {
-        switch (directive.name) {
-          case "click":
-            el.addEventListener(
-              "click",
-              ($event) => {
-                return directive.value.call(this, $event);
-              },
-              false
-            );
-            break;
-          case "model":
-            el.value = this[directive.exp];
-            el.addEventListener(
-              "input",
-              (e) => {
-                this[directive.exp] = e.target.value;
-              },
-              false
-            );
-            break;
-          case "show":
-            const originDisplay =
-              el.style.display === "none" ? "" : el.style.display;
-            el.style.display = this[directive.exp] ? originDisplay : "none";
-            break;
-          case "html":
-            el.innerHTML = directive.value;
-            break;
-          case "class":
-            const cur = " " + (el.getAttribute("class") || "") + " ";
-            if (cur.indexOf(" " + directive.value + " ") < 0) {
-              el.setAttribute("class", (cur + directive.value).trim());
-            }
-            break;
-          case "style":
-            for (const key in directive.value) {
-              const value = directive.value[key];
-              el.style[key] = value;
-            }
-            break;
-          default:
-            break;
+        if (directive.isEvent) {
+          el.addEventListener(
+            directive.name,
+            ($event) => {
+              return directive.value.call(this, $event);
+            },
+            false
+          );
+        } else {
+          switch (directive.name) {
+            case "model":
+              el.value = this[directive.exp];
+              el.addEventListener(
+                "input",
+                (e) => {
+                  this[directive.exp] = e.target.value;
+                },
+                false
+              );
+              break;
+            case "show":
+              const originDisplay =
+                el.style.display === "none" ? "" : el.style.display;
+              el.style.display = this[directive.exp] ? originDisplay : "none";
+              break;
+            case "html":
+              el.innerHTML = directive.value;
+              break;
+            case "class":
+              const cur = " " + (el.getAttribute("class") || "") + " ";
+              if (cur.indexOf(" " + directive.value + " ") < 0) {
+                el.setAttribute("class", (cur + directive.value).trim());
+              }
+              break;
+            case "style":
+              for (const key in directive.value) {
+                const value = directive.value[key];
+                el.style[key] = value;
+              }
+              break;
+            default:
+              break;
+          }
         }
       });
     }

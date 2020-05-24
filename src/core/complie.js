@@ -103,24 +103,9 @@ export default class Complie {
         // 收集directive
         const name = this.getDirectiveName(attr.name);
         if (!attrData["directives"]) attrData["directives"] = [];
-        if (name === "click") {
-          const fnExpRE = /^([\w$_]+|\([^)]*?\))\s*=>|^function(?:\s+[\w$]+)?\s*\(/;
-          const isFunctionExpression = fnExpRE.test(attr.value);
-          const simplePathRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['[^']*?']|\["[^"]*?"]|\[\d+]|\[[A-Za-z_$][\w$]*])*$/;
-          const isMethodPath = simplePathRE.test(attr.value);
-          const isFunctionInvocation = simplePathRE.test(
-            attr.value.replace(/\([^)]*?\);*$/, "")
-          );
-          attrData["directives"].push({
-            name,
-            value:
-              isMethodPath || isFunctionExpression // fn、function(){}
-                ? `$${attr.value}$`
-                : `$function ($event) {  ${
-                    isFunctionInvocation ? "return " + attr.value : attr.value // a = 1、fn(a, $event)
-                  }}$`,
-            exp: attr.value,
-          });
+        // 处理事件
+        if (this.isEventDirective(attr.name)) {
+          this.handleEvent(attr, attrData);
         } else {
           attrData["directives"].push({
             name,
@@ -139,7 +124,7 @@ export default class Complie {
     )}, ${children})`;
 
     // value去除引号，方便直接访问到值，不然就是一个字符串
-    vNodeStr = vNodeStr.replace(/['"]\$(.*)?\$['"]/g, "$1"); //"a" -> a
+    vNodeStr = vNodeStr.replace(/['"]\$(.*?)\$['"]/g, "$1"); //"a" -> a
     let elseif;
     // 单独处理v-for和v-if
     for (let i = 0; i < attribute.length; i++) {
@@ -173,6 +158,33 @@ export default class Complie {
       vNodeChildren.push(vNodeStr);
     }
   }
+  handleEvent(attr, attrData) {
+    const fnExpRE = /^([\w$_]+|\([^)]*?\))\s*=>|^function(?:\s+[\w$]+)?\s*\(/;
+    const isFunctionExpression = fnExpRE.test(attr.value);
+    const simplePathRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['[^']*?']|\["[^"]*?"]|\[\d+]|\[[A-Za-z_$][\w$]*])*$/;
+    const isMethodPath = simplePathRE.test(attr.value);
+    const isFunctionInvocation = simplePathRE.test(
+      attr.value.replace(/\([^)]*?\);*$/, "")
+    );
+    const name = this.getDirectiveName(attr.name);
+    attrData["directives"].push({
+      name,
+      value:
+        isMethodPath || isFunctionExpression // fn、function(){}
+          ? `$${attr.value}$`
+          : `$function ($event) {  ${
+              isFunctionInvocation ? "return " + attr.value : attr.value // a = 1、fn(a, $event)
+            }}$`,
+      exp: attr.value,
+      isEvent: true,
+    });
+  }
+  /**
+   * 事件指令
+   */
+  isEventDirective(attr) {
+    return /(^@|^v-on:)\w+/.test(attr);
+  }
   /**
    * 是否是指令
    */
@@ -183,7 +195,7 @@ export default class Complie {
    * 获取指令名
    */
   getDirectiveName(attr) {
-    return attr.replace(/(?:^v-|^:|^@)(\w+)/, "$1");
+    return attr.replace(/(?:^v-|^:|^@|^v-on:)(\w+)/, "$1");
   }
   /**
    * 获取attr数据
