@@ -81,7 +81,7 @@ export default class Euv {
    * 注册methods
    */
   initMethods(vm) {
-    Object.keys(this.$option.methods).forEach((key) => {
+    Object.keys(this.$option.methods || {}).forEach((key) => {
       Object.defineProperty(vm, key, {
         enumerable: true, // 可枚举
         configurable: false, // 不能再define

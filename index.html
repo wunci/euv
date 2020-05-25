@@ -2,67 +2,176 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
     <title>simple Vue</title>
     <style>
-      nav {
+      body {
+        padding-bottom: 100px;
+      }
+      header {
+        height: 60px;
+        border-bottom: 1px solid #f1f4f8;
+        background: #fff;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
         display: flex;
         align-items: center;
+      }
+      nav {
+        width: 900px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         height: 80px;
-        margin-bottom: 20px;
+        color: #50bfff;
+        font-size: 0;
+      }
+      nav div {
+        font-size: 40px;
+      }
+      #div1 {
+        width: 900px;
+        margin: 80px auto;
       }
       .red {
         color: red;
       }
+      section {
+        margin-bottom: 30px;
+      }
+      section > div {
+        padding-left: 10px;
+      }
+      section h3 {
+        padding: 16px;
+        margin: 20px 0;
+        font-size: 14px;
+        border-radius: 4px;
+        background-color: #ecf9ff;
+        color: rgba(52, 73, 94, 0.8);
+        border-left: 5px solid #50bfff;
+      }
     </style>
   </head>
   <body>
-    <nav>
-      GitHub地址：
-      <a
-        target="_blank"
-        style="text-decoration:none;"
-        href="https://github.com/wclimb/euv"
-      >
-        <svg
-          class="github"
-          fill="#000"
-          height="32"
-          version="1.1"
-          viewBox="0 0 16 16"
-          width="32"
+    <header>
+      <nav>
+        <div>Euv</div>
+        <a
+          target="_blank"
+          style="text-decoration:none;"
+          href="https://github.com/wclimb/euv"
         >
-          <path
-            fill-rule="evenodd"
-            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-          ></path>
-        </svg>
-      </a>
-    </nav>
+          <svg
+            class="github"
+            fill="#000"
+            height="32"
+            version="1.1"
+            viewBox="0 0 16 16"
+            width="32"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+            ></path>
+          </svg>
+        </a>
+      </nav>
+    </header>
     <div id="div1">
-      <button style="font-size:30px;" @click="fn">点击切换值</button>
-      <p v-html="html"></p>
-      {{obj.data}} 这是模版 {{message}}
-      <p v-if="ifValue">显示了<span class="red">v-if</span></p>
-      <p v-else-if="elifValue">显示了<span class="red">v-else-if</span></p>
-      <p v-else>显示了<span class="red">v-else</span></p>
-      <p>{{message}} {{modelMessage + ' ---这是拼接在花括号内的'}}</p>
-      <input type="text" v-model="modelMessage" />
-      <div class="div2" v-show="show" style="font-size: 40px;">
-        <div>test v-show</div>
-      </div>
-      <p class="style" :style="style" style="background: #f60;">测试:style</p>
-      <div v-for="(item, index) in list" class="list">
-        item: {{item}}, index: {{index}}
-      </div>
-      <p :class="cls" class="hello" @mouseenter="console.log(1)">
-        {{hello}}
-      </p>
-      <input type="text" v-model="todoinput" />
-      <button @click="add">添加</button>
-      <div v-for="(item, index) in todolist" @click="todoFn(index, $event)">
-        {{item}}
-      </div>
+      <section>
+        <h3>模板语法</h3>
+        <div>
+          {{obj.data}} 这是模版 {{message}}
+        </div>
+      </section>
+      <section>
+        <h3>v-html:</h3>
+        <div>
+          <button @click="html = '<h4>changed</h4>'">
+            改变html
+          </button>
+          <p v-html="html"></p>
+        </div>
+      </section>
+      <section>
+        <h3>条件渲染:</h3>
+        <div>
+          <button @click="ifValue = !ifValue">点击切换值：{{ifValue}}</button>
+          <p v-if="ifValue">显示了<span class="red">v-if</span></p>
+          <p v-else-if="elifValue">显示了<span class="red">v-else-if</span></p>
+          <p v-else>显示了<span class="red">v-else</span></p>
+        </div>
+      </section>
+      <section>
+        <h3>计算属性和侦听器:</h3>
+        <div>
+          {{hello}}
+        </div>
+      </section>
+      <section>
+        <h3>v-model:</h3>
+        <div>
+          <input type="text" v-model="modelMessage" /> change: {{modelMessage}}
+        </div>
+      </section>
+      <section>
+        <h3>v-show:</h3>
+        <div>
+          <button @click="show = !show">{{show ? '隐藏' : '显示'}}</button>
+          <div class="div2" v-show="show" style="font-size: 30px;">
+            <div>test v-show</div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3>Class 与 Style 绑定</h3>
+        <div>
+          <button @click="style = { fontSize: '20px', color: '#ccc' }">
+            改变style
+          </button>
+          <p>
+            <span class="style" :style="style" style="background: #f60;"
+              >测试:style</span
+            >
+          </p>
+          <hr />
+          <button @click="cls = cls.indexOf('red') >= 0 ? '' : 'red';">
+            toggle切换 class
+          </button>
+          <p :class="cls" class="hello" @mouseenter="console.log(1)">
+            测试class
+          </p>
+        </div>
+      </section>
+      <section>
+        <h3>列表渲染</h3>
+        <div>
+          <button @click="list = [11,22,33,44]">
+            改变列表
+          </button>
+          <div v-for="(item, index) in list" class="list">
+            item: {{item}}, index: {{index}}
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3>事件</h3>
+        <div>
+          <input type="text" v-model="todoinput" />
+          <button @click="add">添加</button>
+          <div v-for="(item, index) in todolist" @click="todoFn(item, $event)">
+            {{item}} 点我
+          </div>
+        </div>
+      </section>
     </div>
   </body>
 </html>

@@ -34,7 +34,12 @@ export default class Watcher {
     return value;
   }
   update() {
-    this.queueWatcher(this);
+    // 计算属性不触发
+    if (this.lazy) {
+      this.dirty = true;
+    } else {
+      this.queueWatcher(this);
+    }
   }
   run() {
     let value = this.get();
@@ -69,6 +74,10 @@ export default class Watcher {
       }
     }
   }
+  /**
+   * 计算属性收集依赖，计算属性可能依赖其他data，所以在依赖data更新的时候，计算属性也需要更新
+   * 所以需要把当前的wather放到依赖data的dep内，data更新触发计算属性的更新
+   */
   depend() {
     let i = this.deps.length;
     while (i--) {

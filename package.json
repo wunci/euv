@@ -5,7 +5,8 @@
   "main": "src/main.js",
   "scripts": {
     "dev": "webpack-dev-server --config webpack.config.js",
-    "build": "webpack --config webpack.config.js"
+    "build-demo": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.build.js"
   },
   "repository": {
     "type": "git",

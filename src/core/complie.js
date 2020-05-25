@@ -76,7 +76,7 @@ export default class Complie {
         value =
           "'" +
           textConetent.replace(/\n/g, "\\n").replace(reg, (match, val) => {
-            return "' + " + val + " + '";
+            return "' + (" + val + ") + '";
           }) +
           "'";
       } else {
@@ -112,7 +112,7 @@ export default class Complie {
             value:
               name !== "for" && name !== "else"
                 ? "$" + attr.value + "$"
-                : attr.value, // 用 $value$ 站位，以便后面可以把引号去掉 "a" -> a
+                : attr.value, // 用 $value$ 占位，以便后面可以把引号去掉 "a" -> a
             exp: attr.value,
           });
         }

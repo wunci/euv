@@ -1,4 +1,4 @@
-import { isNative, isIE, isIOS } from "./index";
+import { isNative, isIE, isIOS, noop } from "./index";
 
 let isUsingMicroTask = false;
 let callbacks = [];
