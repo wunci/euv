@@ -105,7 +105,7 @@ export default class Euv {
       }
     };
   }
-  // 声明周期
+  // 生命周期
   callHook(hook) {
     Dep.pushTarget();
     this.$option[hook] && this.$option[hook].call(this, this);
